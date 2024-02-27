@@ -1,5 +1,6 @@
 <template>
-    <img class="logo" src="../assets/resto.jpg" />
+    <!-- <headerNav /> -->
+    <img class="logo" style="margin-top: 10px;;" src="../assets/resto.jpg" />
     <h1>Sign Up</h1>
     <div class="register">
         <input type="text" v-model="name" name="name" placeholder="Enter Your Name">
@@ -14,8 +15,12 @@
 
 <script>
 
+// import headerNav from './headerNav.vue'
 export default {
     name: 'signUp',
+    // components:{
+    //     headerNav
+    // },
     data(){
         return {
                 name:'',

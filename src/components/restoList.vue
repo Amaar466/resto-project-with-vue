@@ -1,14 +1,14 @@
 <template>
     <headerNav />
-    <h1>Hello User , Welcome to My Home Page..</h1>
+    <h2>List Of Restaurant</h2>
 </template>
 
 <script>
 import headerNav from './headerNav.vue'
  export default{
-    name:'homeWord',
+    name:'restoList',
     components:{
         headerNav
-    },
+    }
  }
 </script>
