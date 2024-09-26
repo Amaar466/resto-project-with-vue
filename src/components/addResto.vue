@@ -1,7 +1,7 @@
 <template>
     <div class="restaurant">
         <headerNav />
-        <h1>Hello User , Welcome on Add Restaurant Page..</h1>
+        <!-- <h1>Hello User , Welcome on Add Restaurant Page..</h1> -->
         <input type="text" v-model="name" name="name" placeholder="Enter Your Name">
         <input type="text" v-model="address" name="address" placeholder="Enter Your Address">
         <input type="text" v-model="contact" name="contact" placeholder="Enter Your contact">

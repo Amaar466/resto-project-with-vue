@@ -3,6 +3,8 @@ import signUp from './components/signUp'
 import loginUser from './components/loginUser'
 import addResto from './components/addResto'
 import restoList from './components/restoList'
+import aboutUs from './components/aboutUs'
+import contactUs from './components/contactUs'
 import {createRouter, createWebHistory} from 'vue-router'
 
 const routes=[
@@ -31,7 +33,16 @@ const routes=[
         component:restoList,
         path:'/all-list'
     },
-
+    {
+    name:'aboutUs',
+    component:aboutUs,
+    path:'/aboutus'
+    },
+    {
+        name:'contactUs',
+        component:contactUs,
+        path:'/contactUs'
+    }
 
 ]
 
