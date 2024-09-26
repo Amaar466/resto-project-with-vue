@@ -5,6 +5,7 @@ import addResto from './components/addResto'
 import restoList from './components/restoList'
 import aboutUs from './components/aboutUs'
 import contactUs from './components/contactUs'
+import RestaurantFooter from './components/RestaurantFooter'
 import {createRouter, createWebHistory} from 'vue-router'
 
 const routes=[
@@ -42,6 +43,11 @@ const routes=[
         name:'contactUs',
         component:contactUs,
         path:'/contactUs'
+    },
+    {
+        name:'RestaurantFooter',
+        component:RestaurantFooter,
+        path:'/RestaurantFooter'
     }
 
 ]

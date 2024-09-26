@@ -46,16 +46,24 @@
       <p class="bio">{{ member.bio }}</p>
     </div>
   </div>
+  <RestaurantFooter />
         </section>
       </div>
     </div>
+    
   </template>
   
   <script>
+  import headerNav from  './headerNav.vue';
+  import RestaurantFooter from  './RestaurantFooter.vue';
 import axios from "axios";
 
 export default {
   name: 'aboutUs',
+  components: {
+    headerNav,
+    RestaurantFooter
+  },
   data() {
     return {
       team: [], // Empty team array to be populated by API response
@@ -84,6 +92,39 @@ export default {
   
   <style scoped>
   /* Hero Section */
+  .main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: white;
+  padding: 5px;
+}
+
+.restaurant-name {
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.nav-menu ul {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+}
+
+.nav-menu ul li {
+  display: inline;
+}
+
+.nav-menu ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.nav-menu ul li a:hover {
+  text-decoration: underline;
+}
+
   .hero-section {
     height: 60vh;
     background-size: cover;

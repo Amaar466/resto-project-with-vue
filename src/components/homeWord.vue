@@ -8,6 +8,11 @@
         <li><router-link to="/">Home</router-link></li>
         <li><router-link to="/aboutUs">About</router-link></li>
         <li><router-link to="/contactUs">Contact Us</router-link></li>
+        <button  style="background-color: cornsilk;
+   
+    font-size: 15px;
+    padding-top: -70px; border-radius: 8px" @click="login">Login</button><br />
+        <a style="color: white; " href="#" @click="logout">Logout</a>
       </ul>
     </nav>
   </header>
@@ -37,22 +42,22 @@
         <h2>Book a Table</h2>
         <form @submit="handleBookingFormSubmit">
           <label for="name">Full Name:</label>
-          <input type="text" id="name" name="name" required>
+          <input type="text" id="name" name="name" v-model="formData.name" required />
 
           <label for="phone">Phone Number:</label>
-          <input type="tel" id="phone" name="phone" required>
+          <input type="tel" id="phone" name="phone" v-model="formData.phone" required />
 
           <label for="email">Email Address:</label>
-          <input type="email" id="email" name="email" required>
+          <input type="email" id="email" name="email" v-model="formData.email" required />
 
           <label for="date">Reservation Date:</label>
-          <input type="date" id="date" name="date" required>
+          <input type="text" id="date" name="reservation_date" v-model="formData.reservation_date" required />
 
           <label for="time">Reservation Time:</label>
-          <input type="time" id="time" name="time" required>
+          <input type="time" id="time" name="reservation_time" v-model="formData.reservation_time" required />
 
           <label for="people">Number of People:</label>
-          <input type="number" id="people" name="people" min="1" required>
+          <input type="number" id="people" name="people" min="1" v-model="formData.people" required />
 
           <button type="submit">Confirm Booking</button>
         </form>
@@ -70,20 +75,19 @@
         </div>
       </div>
     </section>
+
+    <RestaurantFooter />
   </div>
 </template>
 
-
-<!-- <script>
-// import headerNav from './headerNav.vue'
- export default{
-    name:'homeWord'
- }
-</script> -->
-
 <script>
+import RestaurantFooter from './RestaurantFooter.vue';
+
 export default {
   name: "homeWord",
+  components: {
+    RestaurantFooter,
+  },
   data() {
     return {
       menu: [
@@ -93,63 +97,100 @@ export default {
         { id: 4, name: "Caesar Salad", description: "Crisp lettuce, croutons, and Caesar dressing.", price: 10 },
         { id: 5, name: "Tiramisu", description: "Traditional Italian dessert with coffee and mascarpone.", price: 8 },
       ],
-      isModalOpen: false, // Modal control
-      formData: {
+      isModalOpen: false,
+      formData: {  // For booking form
         name: '',
         phone: '',
         email: '',
-        date: '',
-        time: '',
+        reservation_date: '',
+        reservation_time: '',
         people: ''
       },
-      message: ''
+      loginFormData: {  // Separate login form data
+        email: '',
+        password: ''
+      },
+      message: '',
+      errorMessage: ''
     };
   },
   methods: {
-  openModal() {
-    this.isModalOpen = true;
-  },
-  closeModal() {
-    this.isModalOpen = false;
-  },
-  formatDateToDMY(date) {
-    const d = new Date(date);
-    let day = ('0' + d.getDate()).slice(-2);
-    let month = ('0' + (d.getMonth() + 1)).slice(-2); 
-    let year = d.getFullYear();
-    return `${day}/${month}/${year}`;
-  },
-  async handleBookingFormSubmit(event) {
-    event.preventDefault();
+    openModal() {
+      this.isModalOpen = true;
+    },
+    closeModal() {
+      this.isModalOpen = false;
+    },
+    formatDateToDMY(date) {
+      const d = new Date(date);
+      let day = ('0' + d.getDate()).slice(-2);
+      let month = ('0' + (d.getMonth() + 1)).slice(-2); 
+      let year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    },
+    async handleBookingFormSubmit(event) {
+      event.preventDefault();
+      this.formData.reservation_date = this.formatDateToDMY(this.formData.reservation_date);
 
-    // Format the date to dd/mm/yyyy
-    this.formData.date = this.formatDateToDMY(this.formData.date);
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/book-table', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(this.formData),
+        });
 
-    try {
-      const response = await fetch('http://127.0.0.1:8000/api/book-table', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.formData)
-      });
-
-      if (response.ok) {
-        const result = await response.json(); 
-        this.message = result.message;
-        alert('Your table has been booked, confirmation email sent!');
-      } else {
-        this.message = 'Error sending booking confirmation. Please try again.';
+        if (response.ok) {
+          const result = await response.json();
+          this.message = result.message;
+          alert('Your table has been booked, confirmation email sent!');
+          this.closeModal();
+        } else {
+          this.message = 'Error sending booking confirmation. Please try again.';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        this.message = 'Error occurred. Please try again later.';
       }
-    } catch (error) {
-      console.error('Error:', error);
-      this.message = 'Error occurred. Please try again later.';
-    }
+    },
+    async login() {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: this.loginFormData.email,
+            password: this.loginFormData.password,
+          }),
+        });
 
-    this.closeModal();
-  }
+        if (response.ok) {
+          this.$router.push({ name: 'loginUser' });
+          console.log('Login successful!');
+        } else {
+          const errorData = await response.json();
+          this.errorMessage = 'Invalid email or password';
+          console.error('Login failed:', errorData.message);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        this.errorMessage = 'Please enter correct details';
+      }
+    },
+    logout() {
+
+  this.loginFormData.email = '';
+  this.loginFormData.password = '';
+  localStorage.removeItem('userData'); 
+
+  alert('You have been logged out');
+
+  this.$router.push({ name: 'loginUser' });
 }
-
+  },
 };
 </script>
 
@@ -212,6 +253,7 @@ export default {
   text-align: center;
   color: #fff;
 }
+
 .cta-button {
   padding: 10px 20px;
   background-color: #ff6347;
@@ -343,6 +385,3 @@ button[type="submit"] {
   color: #ff7f50;
 }
 </style>
-
-
-

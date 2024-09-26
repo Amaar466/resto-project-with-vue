@@ -1,4 +1,5 @@
 <template>
+    <headerNav />
     <div class="relative w-full h-screen bg-cover bg-center" :style="{ backgroundImage: `url(${backgroundImage})`, height: '600px', backgroundRepeat: 'no-repeat', backgroundSize: 'cover' }">
       <div class="absolute inset-0 bg-black opacity-50"></div> <!-- Overlay -->
       <div class="relative z-10 flex items-center justify-center h-full">
@@ -10,20 +11,20 @@
             <div class="mb-4">
               <h3 class="font-semibold text-lg">Phone</h3>
               <a href="tel:+1234567890" class="text-indigo-400 hover:text-indigo-600" style="font-size: 20px;">
-                +1 (234) 567-890
+                +92 3289136106
               </a>
             </div>
             <div class="mb-4">
               <h3 class="font-semibold text-lg">Email</h3>
               <a style=" " href="mailto:info@restaurant.com" class="text-indigo-400 hover:text-indigo-600">
-                info@restaurant.com
+                contact@restodelight.com
               </a>
             </div>
             <div class="mb-4">
               <h3 class="font-semibold text-lg">Address</h3>
               <p style="color: rgb(213, 27, 27);font-size: 20px;">
-                123 Delicious Street,<br />
-                Foodie Town, FL 32100
+                Address: 123 Food Street, Gourmet City, GC 45678<br />
+              
               </p>
             </div>
           </div>
@@ -49,10 +50,17 @@
         </div>
       </div>
     </div>
+    <RestaurantFooter />
   </template>
   
   <script>
+   import headerNav from  './headerNav.vue';
+  import RestaurantFooter from './RestaurantFooter.vue';
   export default {
+    components: {
+      headerNav,
+    RestaurantFooter, 
+  },
     data() {
       return {
         backgroundImage: require('@/assets/contactus.jpg'),
